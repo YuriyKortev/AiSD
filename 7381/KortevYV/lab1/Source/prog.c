@@ -2,12 +2,12 @@
 #include <ctype.h>
 #include <string.h>
 
-int check(char* w){					//проверка удовлетворяет ли токен
+int check(char* token){					//проверка удовлетворяет ли токен
 							//определению простого логического
-if(strcmp(w,"TRUE")==0 || strcmp(w,"FALSE")==0)
+if(strcmp(token,"TRUE")==0 || strcmp(token,"FALSE")==0)
     return 1;
 else
-    if(strlen(w)==1 && isalpha(*w))
+    if(strlen(token)==1 && isalpha(*token))
       return 1;
 return 0;
 
@@ -20,34 +20,34 @@ for(int i=0; i<tabs;i++)
 
 }
 
-int is_log(char* w,int tabs){
+int is_log(char* token,int tabs){
 
 print(tabs);
 
-if(check(w)){
+if(check(token)){
     printf("\e[1;96mTRUE | FALSE | A-Z\e[0m\n");
     return 1;
 }
 else
-  if(strcmp(w,"NOT")==0){
+  if(strcmp(token,"NOT")==0){
       printf("\e[1;96mNOT ----\e[0m\n");	 //если NOT
-      if(is_log(w=strtok(NULL," "),tabs+1))	 //то следующий токен-простое логическое
+      if(is_log(token=strtok(NULL," "),tabs+1))	 //то следующий токен-простое логическое
 	 return 1;
       else
         return 0;
   }
   else
-        if(*w=='('){
+        if(*token=='('){
 	    printf("\e[1;96m(---- OR | AND ----)\e[0m\n");			//если скобка, то
-            w=strtok(NULL," ");							//токены - простое логическое
-            int fp=is_log(w,tabs+1);						//+ между AND || OR
-            w=strtok(NULL," ");
-            if(strcmp(w,"AND")!=0 && strcmp(w,"OR")!=0)
+            token=strtok(NULL," ");							//токены - простое логическое
+            int fp=is_log(token,tabs+1);						//+ между AND || OR
+            token=strtok(NULL," ");
+            if(strcmp(token,"AND")!=0 && strcmp(token,"OR")!=0)
                 return 0;
-            w=strtok(NULL," ");
-            int sp=is_log(w,tabs+1);
-            w=strtok(NULL," ");
-            if(fp==1 && sp==1 && *w==')' && strlen(w)==1)
+            token=strtok(NULL," ");
+            int sp=is_log(token,tabs+1);
+            token=strtok(NULL," ");
+            if(fp==1 && sp==1 && *token==')' && strlen(token)==1)
                 return 1;
             else
                 return 0;
@@ -62,10 +62,10 @@ char str[200];
 fgets(str,200,stdin);
 str[strlen(str)-1]='\0';
 
-char* w=strtok(str," ");
+char* token=strtok(str," ");
 
 
-if(is_log(w,1))
+if(is_log(token,1))
     printf("Yes\n");
 else
     printf("No\n");
