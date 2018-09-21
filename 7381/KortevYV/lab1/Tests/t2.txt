@@ -1,0 +1,2 @@
+NOT ( NOT TRUE OR ( FALSE AND G ) )
+
