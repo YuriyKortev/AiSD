@@ -29,3 +29,11 @@ echo 'test7: '
 cat ./Tests/t7.txt;
 ./pr < ./Tests/t7.txt;
 echo -e '\n'
+echo 'test8: '
+cat ./Tests/t8.txt;
+./pr < ./Tests/t8.txt;
+echo -e '\n'
+echo 'test9: '
+cat ./Tests/t9.txt;
+./pr < ./Tests/t9.txt;
+echo -e '\n'
