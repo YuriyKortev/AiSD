@@ -23,12 +23,15 @@ BinKor* crtBinKor(char* str, int* i,BinKor* parent){  //инициализаци
     tpr->prev=NULL;
     tpr->lenght=str[*i];
   }
-  
+  else
+    return NULL;
   if(str[*i=*i+2]=='(')
     tpr->child=crtBinKor(str,i,tpr);
   else
     if(isdigit(str[*i]))
       tpr->weight=str[*i];
+    else
+      return NULL;
   tpr->next=malloc(sizeof(BinKor));
   tpr->next->prev=tpr;
   *i=*i+4;
@@ -44,12 +47,18 @@ BinKor* crtBinKor(char* str, int* i,BinKor* parent){  //инициализаци
   else
     if(isdigit(str[*i]))
       tpr->weight=str[*i];
+    else
+      return NULL;
   *i=*i+2;
   return head;
 }
 
 void numKor(BinKor* f,BinKor* sec,int* num)    //поиск вхождений
 {
+  if(f==NULL || sec==NULL){
+    printf("not BinKor\n");
+    return;
+  }
   if(f->child==NULL && f->next->child==NULL && f->weight==sec->weight && f->lenght==sec->lenght && f->next->lenght==sec->next->lenght && f->next->weight==sec->next->weight)
   {
 	*num=*num+1;
