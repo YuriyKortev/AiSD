@@ -1,2 +1,0 @@
-NOT ( A OR ( G AND 4 ) )
-

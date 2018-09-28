@@ -1,2 +1,0 @@
-( TRUE AND ( A OR NOT ( B AND ( G OR H ) ) ) )
-
