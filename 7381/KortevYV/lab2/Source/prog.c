@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct BinKor{         //плечо бинарного коромысла, если child==NULL
   char weight;                 //то держит гирьку
   char lenght;
@@ -85,6 +86,8 @@ int main() {
   int num=0;
   numKor(head,sec,&num);
   printf("%d\n",num);
+  free(head);
+  free(sec);
   return 0;
 
 }
