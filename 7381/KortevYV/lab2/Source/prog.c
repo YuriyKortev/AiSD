@@ -74,7 +74,7 @@ void numKor(BinKor* f,BinKor* sec,int* num)    //поиск вхождений
 int main() {
   char str[200];
   char str2[200];
-  printf("Должны быть пробелы\n");
+  printf("БинКор::=((lenght грузик) (lenght грузик))\nгрузик::=weight | БинКор\n");
   fgets(str,200,stdin);
   fgets(str2,200,stdin);
   str[strlen(str)-1]='\0';
