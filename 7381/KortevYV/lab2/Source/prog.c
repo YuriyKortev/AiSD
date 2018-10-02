@@ -12,9 +12,17 @@ typedef struct BinKor{         //плечо бинарного коромысл�
   struct  BinKor* child;
 }BinKor;
 
-BinKor* crtBinKor(char* str, int* i,BinKor* parent){  //инициализация
+void print(int num){
+  for(int i=0;i<num;i++)
+    printf("! ");
+}
+
+BinKor* crtBinKor(char* str, int* i,BinKor* parent,int tab){  //инициализация
+  tab++;
+
   BinKor* tpr=NULL;
   BinKor* head=NULL;
+  
   if(str[*i]=='('){
     *i=*i+2;
     tpr=malloc(sizeof(BinKor));
@@ -26,13 +34,25 @@ BinKor* crtBinKor(char* str, int* i,BinKor* parent){  //инициализаци
   }
   else
     return NULL;
-  if(str[*i=*i+2]=='(')
-    tpr->child=crtBinKor(str,i,tpr);
+  
+  *i=*i+2;
+
+  print(tab);
+  printf(" %d: ",tab);
+  printf("(%c ",tpr->lenght);
+
+  if(str[*i]=='('){
+    printf("->%d)\n",tab+1);
+    tpr->child=crtBinKor(str,i,tpr,tab);
+  }
   else
-    if(isdigit(str[*i]))
+    if(isdigit(str[*i])){
       tpr->weight=str[*i];
+      printf("%c)\n",tpr->weight);
+    }
     else
       return NULL;
+
   tpr->next=malloc(sizeof(BinKor));
   tpr->next->prev=tpr;
   *i=*i+4;
@@ -43,13 +63,23 @@ BinKor* crtBinKor(char* str, int* i,BinKor* parent){  //инициализаци
   if(isdigit(str[*i]))
     tpr->lenght=str[*i];
   *i=*i+2;
-  if(str[*i]=='(')
-    tpr->child=crtBinKor(str,i,tpr);
+
+  print(tab);
+  printf(" %d: ",tab);
+  printf("(%c ",tpr->lenght);
+
+  if(str[*i]=='('){
+    printf("->%d)\n",tab+1);
+    tpr->child=crtBinKor(str,i,tpr,tab);
+  }
   else
-    if(isdigit(str[*i]))
+    if(isdigit(str[*i])){
       tpr->weight=str[*i];
+      printf("%c)\n",tpr->weight);
+    }
     else
       return NULL;
+
   *i=*i+2;
   return head;
 }
@@ -57,7 +87,7 @@ BinKor* crtBinKor(char* str, int* i,BinKor* parent){  //инициализаци
 void numKor(BinKor* f,BinKor* sec,int* num)    //поиск вхождений
 {
   if(f==NULL || sec==NULL){
-    printf("not BinKor\n");
+    printf("Введено не бинарное коромысло\n");
     return;
   }
   if(f->child==NULL && f->next->child==NULL && f->weight==sec->weight && f->lenght==sec->lenght && f->next->lenght==sec->next->lenght && f->next->weight==sec->next->weight)
@@ -81,12 +111,13 @@ int main() {
   str2[strlen(str2)-1]='\0';
   int i=0;
   
-  BinKor* head=crtBinKor(str,&i,NULL);
+  BinKor* head=crtBinKor(str,&i,NULL,0);
   i=0;
-  BinKor* sec=crtBinKor(str2,&i,NULL);
+  printf("\n");
+  BinKor* sec=crtBinKor(str2,&i,NULL,0);
   int num=0;
   numKor(head,sec,&num);
-  printf("%d\n",num);
+  printf("%d вхождений(я) 2го коромысла в 1е\n",num);
   free(head);
   free(sec);
   return 0;
