@@ -1,4 +1,4 @@
-#include  <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -82,6 +82,20 @@ return;
 
 }
 
+void printqueue (queue* children){
+  if(isempty(children)){
+    printf("пуста\n");
+    return;
+  }
+
+  node* tpr=children->head;
+  while(tpr!=NULL){
+    printf("-%d",tpr->value);
+    tpr=tpr->next;
+  }
+  printf("\n");
+  return;
+}
 
  
 queue * init (){
@@ -95,26 +109,55 @@ queue * init (){
 return tpr;
 
 }
+char** getfmly(FILE* ptr,int num){           //создает массив типа дети
+
+  char** children=malloc(num*sizeof(char*));
+  int i,j;
+  for(i=0;i<num;i++){
+    children[i]=malloc(sizeof(char)*(num+2));
+    fgets(children[i],num+2,ptr);
+    children[i][strlen(children[i])-1]='\0';
+  }
+  
+  return children;
+}
+
+char** getnames(FILE* ptr,int num){      //создает массив с именами из файла
+
+  char **name=malloc(num*sizeof(char*));
+  int i;
+  for(i=0;i<num;i++){
+    name[i]=malloc(sizeof(char)*20);
+    fgets(name[i],20,ptr);
+    name[i][strlen(name[i])-1]='\0';
+  }
+  
+  return name;
+}
 
 
  
 int main (){
   
-  FILE * ptr = fopen ("generations.txt", "w");
+  char fname[20];
+  printf("choose fmly file\n");
+  fgets(fname,20,stdin);
+  fname[strlen(fname)-1]='\0';
   
- 
-  char *name[] ={ "anna", "boris", "ekaterina", "igor", "marina", "olga", "yakov" };
-  
- 
-  int list[7][7] ={ {0, 0, 0, 1, 0, 1, 0},  //заданный массив, содержащий информацию
-                    {0, 0, 0, 0, 0, 0, 0},  // о детях человека
-                    {0, 0, 0, 0, 1, 0, 0},
-                    {0, 1, 1, 0, 0, 0, 0}, 
-                    {0, 0, 0, 0, 0, 0, 0}, 
-                    {0, 0, 0, 0, 0, 0, 1},
-                    {0, 0, 0, 0, 0, 0, 0}};
-  
- 
+  FILE * ptr = fopen (fname, "r");
+  FILE * exit = fopen("generation.txt", "w");
+  if(ptr==NULL){
+    printf("error");
+    return 0;
+  }
+  int num;
+  fscanf(ptr,"%d\n",&num);
+
+  char** name=getnames(ptr,num);
+  printf("\n");
+  char** list=getfmly(ptr,num);
+
+  fclose(ptr);
   queue * children = init ();
   
   char start[20];
@@ -123,7 +166,7 @@ int main (){
   
   printf ("Варианты:\n");
   
-  for (int p; p < 7; p++)
+  for (int p=0; p < num; p++)
     printf ("%s\n", name[p]);
   
   fgets (start, 20, stdin);
@@ -134,7 +177,7 @@ int main (){
   
   while (strcmp (name[next], start)!=0){
     next++;
-    if(next==7){
+    if(next==num){
       printf("введено некорректное имя\n");
       return 0;
     }
@@ -145,14 +188,14 @@ int main (){
   printf("\n");
  
   while (!isempty (children)){
+      printqueue(children);
       next = pop (children);
-      fprintf (ptr, "%s\n", name[next]);
-      printf("%s\n",name[next]);
-      for (int i = 0; i < 7; i++){
-	if (list[next][i])
+      fprintf (exit, "%s\n", name[next]);
+
+      for (int i = 0; i < num; i++)
+	if (list[next][i]=='1')
 	  push (children, i);
-      }
   }
-  
-return 0;
+  fclose(exit);
+  return 0;
 }

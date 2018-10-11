@@ -13,8 +13,4 @@ echo 'test3: '
 cat ./Tests/t3.txt;
 ./pr < ./Tests/t3.txt;
 echo -e '\n'
-echo 'test4: '
-cat ./Tests/t4.txt;
-./pr < ./Tests/t4.txt;
-echo -e '\n'
 
