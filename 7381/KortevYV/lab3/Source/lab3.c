@@ -196,6 +196,7 @@ int main (){
 	if (list[next][i]=='1')
 	  push (children, i);
   }
+  clean(children);
   fclose(exit);
   return 0;
 }
