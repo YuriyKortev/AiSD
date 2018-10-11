@@ -175,7 +175,7 @@ int main (){
   
   int next = 0;
   
-  while (strcmp (name[next], start)!=0){
+  while (strcmp (name[next], start)!=0){   //поиск индекса имени в массиве
     next++;
     if(next==num){
       printf("введено некорректное имя\n");
@@ -183,12 +183,12 @@ int main (){
     }
   }
 
-  push (children, next);
-  
+  push (children, next);                   //добавляю в очередь индекс имени 
+                                           //человка
   printf("\n");
  
-  while (!isempty (children)){
-      printqueue(children);
+  while (!isempty (children)){             //добавляю в очередь индексы потомков
+      printqueue(children);                //человека и вывожу в файл
       next = pop (children);
       fprintf (exit, "%s\n", name[next]);
 
