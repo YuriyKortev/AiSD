@@ -41,8 +41,6 @@ void push (queue * children, int value)
     children->head = tpr;  
     children->tail = tpr;
   }
-  tpr=NULL;
-  free(tpr);
   return;
 }
 
