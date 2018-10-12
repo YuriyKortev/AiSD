@@ -41,6 +41,8 @@ void push (queue * children, int value)
     children->head = tpr;  
     children->tail = tpr;
   }
+  tpr=NULL;
+  free(tpr);
   return;
 }
 
@@ -96,7 +98,6 @@ void printqueue (queue* children){
   printf("\n");
   return;
 }
-
  
 queue * init (){
   
@@ -109,6 +110,7 @@ queue * init (){
 return tpr;
 
 }
+
 char** getfmly(FILE* ptr,int num){           //создает массив типа дети
 
   char** children=malloc(num*sizeof(char*));
@@ -196,7 +198,16 @@ int main (){
 	if (list[next][i]=='1')
 	  push (children, i);
   }
+  int i;
+
+  for(i=0;i<num;i++){  
+    free(name[i]);
+    free(list[i]);
+  }
+  free(name);
+  free(list);
   clean(children);
+  free(children);
   fclose(exit);
   return 0;
 }
