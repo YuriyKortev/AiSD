@@ -52,19 +52,20 @@ int pop (queue * children){
       printf ("Очередь пуста\n");
       return 0;
   }
-  
+  int exit;
   if (children->head == children->tail){
-    int exit = children->head->value; 
+    exit = children->head->value; 
     children->head = NULL;
-    children->tail = NULL;
+    free(children->tail);
     return exit;
   }
   
   node * tpr = children->head;
   
   children->head = children->head->next;
-  
-return tpr->value;
+  exit=tpr->value;
+  free(tpr);
+return exit;
 
 }
 
