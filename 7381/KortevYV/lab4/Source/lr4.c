@@ -8,19 +8,23 @@ typedef struct node{
   struct node* right;
 }BinTree;
 
-int ind(char* str1, char ch){
+int ind(char* str, char ch){  //возвращает индекс ch в str
   int n=0;
-  while(ch!=str1[n])n++;
+  while(ch!=str[n])n++;
   return n;
 }
 
-BinTree* postinfix(BinTree* tpr,char* lkp, char* lpk,int index, int n){
+BinTree* postinfix(BinTree* tpr,char* lkp, char* lpk,int index, int n){ //построение дерева по ЛКП И ЛПК перечислениям узлов
   if(tpr==NULL)
     return NULL;
+  printf("index:%d\n",index);
+  printf("n:%d\n",n);
+  printf("root(tpr):%c\n",tpr->val);
   int left_val=ind(lkp,lpk[index])-n;
   if(lpk[left_val]!='/'){
     tpr->left=(BinTree*)malloc(sizeof(BinTree));
     tpr->left->val=lpk[left_val];
+    printf("root(left(tpr)):%c\n",tpr->left->val);
   }
   else
     tpr->left=NULL;
@@ -28,6 +32,7 @@ BinTree* postinfix(BinTree* tpr,char* lkp, char* lpk,int index, int n){
   if(lpk[index-1]!='/'){
     tpr->right=(BinTree*)malloc(sizeof(BinTree));
     tpr->right->val=lpk[index-1];
+    printf("root(right(tpr)):%c\n",tpr->right->val);
   }
   else
     tpr->right=NULL;
@@ -55,7 +60,7 @@ void destroy(BinTree* b){
 }
 
 int main() {
-  
+  printf("Введите перечисления узлов в ЛКП И ЛПК порядках\n");
   char lkp[500];
   char lpk[500];
   fgets(lkp,500,stdin);
