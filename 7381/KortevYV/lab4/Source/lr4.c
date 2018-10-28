@@ -3,9 +3,7 @@
 #include <string.h>
 
 typedef struct node{
-  char val;
-  struct node* left;
-  struct node* right;
+  char tree[200];
 }BinTree;
 
 int ind(char* str, char ch){  //возвращает индекс ch в str
@@ -14,48 +12,50 @@ int ind(char* str, char ch){  //возвращает индекс ch в str
   return n;
 }
 
-BinTree* postinfix(BinTree* tpr,char* lkp, char* lpk,int index, int n){ //построение дерева по ЛКП И ЛПК перечислениям узлов
-  if(tpr==NULL)
+BinTree* postinfix(BinTree* tpr,char* lkp, char* lpk,int index, int n,int k){ //построение дерева по ЛКП И ЛПК перечислениям узлов
+  if(tpr->tree[k]=='/')
     return NULL;
   printf("index:%d\n",index);
   printf("n:%d\n",n);
-  printf("root(tpr):%c\n",tpr->val);
+  printf("root(tpr):%c\n",tpr->tree[k]);
   int left_val=ind(lkp,lpk[index])-n;
   if(lpk[left_val]!='/'){
-    tpr->left=(BinTree*)malloc(sizeof(BinTree));
-    tpr->left->val=lpk[left_val];
-    printf("root(left(tpr)):%c\n",tpr->left->val);
+    tpr->tree[2*k+1]=lpk[left_val];
+    printf("root(left(tpr)):%c\n",tpr->tree[2*k+1]);
   }
   else
-    tpr->left=NULL;
+    tpr->tree[2*k+1]='/';
     
   if(lpk[index-1]!='/'){
-    tpr->right=(BinTree*)malloc(sizeof(BinTree));
-    tpr->right->val=lpk[index-1];
-    printf("root(right(tpr)):%c\n",tpr->right->val);
+    tpr->tree[2*(k+1)]=lpk[index-1];
+    printf("root(right(tpr)):%c\n",tpr->tree[2*(k+1)]);
   }
   else
-    tpr->right=NULL;
+    tpr->tree[2*(k+1)]='/';
 
-  postinfix(tpr->left,lkp,lpk,left_val,n);
-  postinfix(tpr->right,lkp,lpk,index-1,n+1);
+  postinfix(tpr,lkp,lpk,left_val,n,2*k+1);
+  postinfix(tpr,lkp,lpk,index-1,n+1,2*(k+1));
   return tpr;
 }
 
-void printKLP(BinTree* b){
-	if (b!=NULL) {
-			printf("%c",b->val);
-			printKLP(b->left);
-			printKLP(b->right);
+void printKLP(BinTree* b,int k){
+	if (b->tree[k]!='/') {
+			printf("%c",b->tree[k]);
+			printKLP(b,2*k+1);
+			printKLP(b,2*(k+1));
 	}
         else printf("/");
 }
 
-void destroy(BinTree* b){
-  if(b!=NULL){
-    destroy(b->left);
-    destroy(b->right);
-    free(b);
+void PrintTree (BinTree* btree, int n,int k) 
+{ 
+  if(btree->tree[k]!='/'){
+    if (btree->tree[2*k+1]!='/') PrintTree(btree, n+1,2*k+1); 
+ 
+    for (int i = 0; i < n; i++) printf(" "); 
+      printf("%c\n", btree->tree[k]); 
+ 
+    if (btree->tree[2*(k+1)]!='/') PrintTree(btree, n+1,2*(k+1)); 
   }
 }
 
@@ -73,11 +73,12 @@ int main() {
 
   lkp[strlen(lkp)-1]='\0';
   lpk[strlen(lpk)-1]='\0';
-  BinTree* tree=(BinTree*)malloc(sizeof(BinTree));
-  tree->val=lpk[strlen(lpk)-1];
-  postinfix(tree,lkp,lpk,strlen(lpk)-1,1);
-  printKLP(tree);
+  BinTree* btree=(BinTree*)malloc(sizeof(BinTree));
+  btree->tree[0]=lpk[strlen(lpk)-1];
+  postinfix(btree,lkp,lpk,strlen(lpk)-1,1,0);
+  printKLP(btree,0);
   printf("\n");
- // destroy(&tree);
+  PrintTree(btree,0,0);
+  free(btree);
   return 0;
 }
