@@ -9,15 +9,6 @@ typedef struct node{
     int size;
 }Rbt;
 
-Rbt* search(Rbt* tpr,char k){
-    if(tpr==NULL)return NULL;
-    if(tpr->key==k)return tpr;
-    if(k<tpr->key)
-      search(tpr->left,k);
-    else
-      search(tpr->right,k);
-}
-
 int gsize(Rbt* tpr){
     if(tpr==NULL)
       return 0;
@@ -106,7 +97,7 @@ int main()
     }
     Rbt* tree=NULL;
     int n=0;
-    char in,rbt[100];
+    char rbt[100];
     fgets(rbt,100,ptr);
     rbt[strlen(rbt)-1]='\0';
     while(rbt[n]!='\0'){
@@ -114,7 +105,7 @@ int main()
        n++;
     }
     PrintTree(tree,0);
-    printf("\nPrint key\n");
+
     char d;
     fscanf(ptr,"%c",&d);
     if(find(tree,d)!=NULL)
