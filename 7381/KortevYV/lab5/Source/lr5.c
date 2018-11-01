@@ -64,38 +64,34 @@ Rbt* find(Rbt* tpr, char k){
     else return find(tpr->right,k);
 }
 
-Rbt* join(Rbt* p, Rbt* q) // объединение двух деревьев
-{
-	if( !p ) return q;
-	if( !q ) return p;
-	if( rand()%(p->size+q->size) < p->size ) 
-	{
-		p->right = join(p->right,q); 
-		fsize(p); 
-		return p; 
-	}
-	else 
-	{
-		q->left = join(p,q->left); 
-		fsize(q); 
-		return q; 
-	}
+Rbt* join(Rbt* p, Rbt* q){
+   if( !p ) return q;
+   if( !q ) return p;
+   if( rand()%(p->size+q->size) < p->size ){
+      p->right = join(p->right,q); 
+      fsize(p); 
+      return p; 
+   }
+   else{
+      q->left = join(p,q->left); 
+      fsize(q); 
+      return q; 
+   }
 }
 
-Rbt* delete(Rbt* p, char k) // удаление из дерева p первого найденного узла с ключом k 
-{
-	if( !p ) return p; 
-	if( p->key==k ) 
-	{
-		Rbt* q = join(p->left,p->right); 
-		free(p); 
-		return q; 
-	}
-	else if( k<p->key ) 
-		p->left = delete(p->left,k); 
-	else 
-		p->right = delete(p->right,k); 
-	return p; 
+Rbt* delete(Rbt* p, char k){
+    if(!p)return p; 
+    if(p->key==k){
+       Rbt* q=join(p->left,p->right); 
+       free(p);
+       return q; 
+    }
+    else 
+         if( k<p->key )
+            p->left=delete(p->left,k); 
+         else 
+            p->right = delete(p->right,k); 
+    return p; 
 }
 
 int main()
