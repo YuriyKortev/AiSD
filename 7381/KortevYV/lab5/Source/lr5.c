@@ -6,18 +6,8 @@ typedef struct node{
     char key;
     struct node* left;
     struct node* right;
-    int size;
 }Rbt;
 
-int gsize(Rbt* tpr){
-    if(tpr==NULL)
-      return 0;
-    return tpr->size;
-}
-
-void fsize(Rbt* tpr){
-    tpr->size=gsize(tpr->right)+gsize(tpr->left)+1;
-}
 
 Rbt* add(Rbt* tpr,char k){
     if(tpr==NULL){
@@ -32,7 +22,7 @@ Rbt* add(Rbt* tpr,char k){
         else
           tpr->right=add(tpr->right,k);
     }
-    fsize(tpr);
+ 
     return tpr;
 }
 
@@ -55,34 +45,38 @@ Rbt* find(Rbt* tpr, char k){
     else return find(tpr->right,k);
 }
 
-Rbt* join(Rbt* p, Rbt* q){
-   if( !p ) return q;
-   if( !q ) return p;
-   if( rand()%(p->size+q->size) < p->size ){
-      p->right = join(p->right,q); 
-      fsize(p); 
-      return p; 
-   }
-   else{
-      q->left = join(p,q->left); 
-      fsize(q); 
-      return q; 
-   }
-}
+void delete(Rbt* p,char data){
+	Rbt** tpr=&p;
+	while((*tpr)->key!=data){
+		if((*tpr)->key<data)
+			tpr=&((*tpr)->right);
+		else
+			tpr=&((*tpr)->left);
+	}
+	
+	Rbt* q=*tpr;
+	if(q->left==NULL)
+		*tpr=q->right;
+	else
+		if(q->right==NULL)
+			*tpr=q->left;
+		else
+		{
+			Rbt* r=q->left;
+			Rbt* s=q;
+			while(r->right!=NULL){
+				s=r;
+				r=r->right;
+			}
+			s->right=r->left;
+			r->left=q->left;
+			r->right=q->right;
+			(*tpr)=r;
+		}
+	q->left=NULL;
+	q->right=NULL;
+	free(q);
 
-Rbt* delete(Rbt* p, char k){
-    if(!p)return p; 
-    if(p->key==k){
-       Rbt* q=join(p->left,p->right); 
-       free(p);
-       return q; 
-    }
-    else 
-         if( k<p->key )
-            p->left=delete(p->left,k); 
-         else 
-            p->right = delete(p->right,k); 
-    return p; 
 }
 
 int main()
@@ -108,8 +102,10 @@ int main()
 
     char d;
     fscanf(ptr,"%c",&d);
-    if(find(tree,d)!=NULL)
-      delete(tree,d);
+    
+    if(find(tree,d))
+	    delete(tree,d);
+	    
     printf("\n\n");
     PrintTree(tree,0);
     return 0;
