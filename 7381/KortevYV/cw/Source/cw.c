@@ -288,7 +288,7 @@ int main()
 	while(n>0){
 		time1=clock();
 		delete(&tree,rbt[n],&iter);
-        fprintf(ptr,TABLE2,999-n,rbt[n],iter,(int)clock()-time1);
+        fprintf(ptr,TABLE2,count-n-1,rbt[n],iter,(int)clock()-time1);
     	iter=0;
     	n--;
 	}
